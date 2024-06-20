@@ -63,7 +63,7 @@ const Footer = () => {
 
         {/* Copy Right */}
         <div className="text-center mt-8">
-          <p>&copy; 2024 Nama Perusahaan. Hak Cipta Dilindungi.</p>
+          <p>&copy; 2024 OurAir. Hak Cipta Dilindungi.</p>
         </div>
       </div>
     </footer>
