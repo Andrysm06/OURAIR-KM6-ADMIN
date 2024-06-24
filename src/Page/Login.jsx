@@ -9,26 +9,27 @@ import {
 import ButtonPrimary from "../components/ButtonPrimary";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let valid = true;
 
-    if (email !== "adminourair@gmail.com") {
-      setEmailError("Email tidak valid");
+    if (username !== "ourair") {
+      setUsernameError("Username tidak valid");
       valid = false;
     } else {
-      setEmailError("");
+      setUsernameError("");
     }
 
-    if (password !== "admin12345") {
+    if (password !== "Admin12345") {
       setPasswordError("Password salah");
       valid = false;
     } else {
@@ -36,10 +37,30 @@ const Login = () => {
     }
 
     if (valid) {
-      // Successful login logic
-      console.log("Login successful");
-      navigate("/Dashboard");
+      try {
+        const response = await adminLogin(username, password);
+        if (response.success) {
+          localStorage.setItem("isLoggedIn", "true");
+          setSuccessMessage("Berhasil Masuk");
+          console.log("Login successful");
+          setTimeout(() => navigate("/Dashboard"), 2000);
+        }
+      } catch (error) {
+        console.error(" login error", error);
+      }
     }
+  };
+
+  const adminLogin = (username, password) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (username === "ourair" && password === "Admin12345") {
+          resolve({ success: true });
+        } else {
+          resolve({ success: false });
+        }
+      }, 1000);
+    });
   };
 
   return (
@@ -58,24 +79,24 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-600 mb-1"
             >
-              Email
+              Username
             </label>
             <input
-              id="email"
+              id="username"
               type="text"
-              placeholder="Contoh: Jhondoe@gmail.com"
+              placeholder="Masukkan username"
               className={`w-full px-4 py-2 rounded-lg border ${
-                emailError ? "border-red-500" : "border-gray-300"
+                usernameError ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:border-blue-500`}
-              value={email}
+              value={username}
               autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
-            {emailError && (
-              <div className="text-red-500 text-xs mt-1">{emailError}</div>
+            {usernameError && (
+              <div className="text-red-500 text-xs mt-1">{usernameError}</div>
             )}
           </div>
           <div className="mb-6">
@@ -117,6 +138,11 @@ const Login = () => {
           </div>
           <ButtonPrimary text="Masuk" type="submit" />
         </form>
+        {successMessage && (
+          <div className="mt-4 text-green-600 text-center text-lg font-semibold">
+            {successMessage}
+          </div>
+        )}
       </div>
     </div>
   );
