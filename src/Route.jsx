@@ -1,10 +1,12 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Dashboard from "./Page/Dashboard";
 import Login from "./Page/Login";
 import Notification from "./Page/Notification";
 import PrivateRoute from "./PrivateRoute";
+import AdminUserTable from "./Page/AdminUserTable";
+import NotFound from "./NotFound"; // Import komponen NotFound
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,18 @@ const router = createBrowserRouter([
         <Notification />
       </PrivateRoute>
     ),
+  },
+  {
+    path: "/users",
+    element: (
+      <PrivateRoute>
+        <AdminUserTable />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "*", // Rute wildcard untuk halaman NotFound
+    element: <NotFound />,
   },
 ]);
 

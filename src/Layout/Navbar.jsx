@@ -77,9 +77,12 @@ const Navbar = () => {
             </button>
             <div className="flex flex-col mt-4">
               <Link
-                to="/profile"
+                to="/Dashboard"
                 className="text-black hover:text-blue-500 mb-4"
               >
+                Dashboard
+              </Link>
+              <Link to="/users" className="text-black hover:text-blue-500 mb-4">
                 Users
               </Link>
               <Link to="/about" className="text-black hover:text-blue-500 mb-4">
