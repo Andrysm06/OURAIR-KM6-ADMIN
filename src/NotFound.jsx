@@ -1,20 +1,25 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import imageNotfound from "../public/404.svg";
 
 const NotFound = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-gray-100">
-      <div className="text-center p-8 transform transition duration-500 hover:scale-105">
+      <div className="text-center p-8 transform transition duration-500 ">
         <FontAwesomeIcon
           icon={faExclamationTriangle}
           className="text-6xl text-yellow-500 mb-4 animate-bounce"
         />
-        <h1 className="text-7xl font-extrabold text-blue-600">404</h1>
-        <p className="text-2xl text-gray-800 mt-4">Halaman Tidak Ditemukan</p>
-        <p className="text-lg text-gray-600 mt-2">
-          Halaman yang Anda cari mungkin telah dihapus, ada namanya diubah, atau
-          untuk sementara tidak tersedia.
+        <div className="flex justify-center mb-4">
+          <img src={imageNotfound} alt="Not Found" className="h-24" />
+        </div>
+        <h1 className="text-4xl font-extrabold text-blue-600">
+          Oops! Halaman Tidak Ditemukan
+        </h1>
+        <p className="text-2xl  mt-4">
+          Halaman yang Anda cari mungkin telah dihapus atau untuk sementara
+          tidak tersedia.
         </p>
         <a
           href="/"
