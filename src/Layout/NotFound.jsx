@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import imageNotfound from "../public/404.svg";
+import imageNotfound from "../../public/404.svg";
 
 const NotFound = () => {
   return (

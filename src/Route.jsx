@@ -6,7 +6,7 @@ import Login from "./Page/Login";
 import Notification from "./Page/Notification";
 import PrivateRoute from "./PrivateRoute";
 import AdminUserTable from "./Page/AdminUserTable";
-import NotFound from "./NotFound"; // Import komponen NotFound
+import NotFound from "../src/Layout/NotFound"; // Import komponen NotFound
 
 const router = createBrowserRouter([
   {
