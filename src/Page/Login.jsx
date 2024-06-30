@@ -66,13 +66,6 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen px-5 md:px-0 bg-gray-100">
       <div className="w-full max-w-sm relative bg-white p-8 rounded-lg shadow-md">
-        <a
-          href="https://ourair-km-6-frontend-final-project.vercel.app/"
-          className="absolute top-3 left-3 text-gray-600 hover:text-gray-800"
-          aria-label="Go back"
-        >
-          <FontAwesomeIcon icon={faChevronLeft} className="h-5 w-5" />
-        </a>
         <h1 className="mb-5 text-2xl text-center font-bold text-gray-700">
           Masuk
         </h1>
