@@ -1,32 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 
 const AdminUserTable = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      role: "User",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      name: "Michael Johnson",
-      email: "michael.johnson@example.com",
-      role: "Editor",
-      status: "Active",
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     id: null,
     name: "",
@@ -34,11 +12,36 @@ const AdminUserTable = () => {
     role: "",
     status: "Active",
   });
-
   const [isEditing, setIsEditing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users`,
+          {
+            headers: {
+              Authorization: `Bearer ${yourAuthToken}`,
+            },
+          }
+        );
+        setUsers(response.data.data);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          console.error("Unauthorized - Please log in again.");
+          // Handle unauthorized access (e.g., redirect to login)
+        } else {
+          console.error("Error fetching users:", error.message);
+          // Handle other errors (e.g., display an error message to the user)
+        }
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -247,7 +250,7 @@ const AdminUserTable = () => {
                                 Status
                               </label>
                               <select
-                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 id="status"
                                 name="status"
                                 value={formData.status}
@@ -264,23 +267,13 @@ const AdminUserTable = () => {
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                  {isEditing ? (
-                    <button
-                      type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={handleUpdateUser}
-                    >
-                      Update
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={handleAddUser}
-                    >
-                      Add
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={isEditing ? handleUpdateUser : handleAddUser}
+                  >
+                    {isEditing ? "Update" : "Add"}
+                  </button>
                   <button
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
@@ -306,12 +299,12 @@ const AdminUserTable = () => {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <h3 className="text-lg leading-6 font-medium text-gray-900">
-                        Konfirmasi penghapusan
+                        Delete User
                       </h3>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          Apakah Anda yakin ingin menghapus pengguna ini? Aksi
-                          ini tidak dapat dibatalkan.
+                          Are you sure you want to delete this user? This action
+                          cannot be undone.
                         </p>
                       </div>
                     </div>
@@ -320,17 +313,17 @@ const AdminUserTable = () => {
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={confirmDeleteUser}
                   >
-                    Hapus
+                    Delete
                   </button>
                   <button
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={closeDeleteModal}
                   >
-                    Batal
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -338,6 +331,7 @@ const AdminUserTable = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

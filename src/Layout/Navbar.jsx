@@ -85,9 +85,7 @@ const Navbar = () => {
               <Link to="/users" className="text-black hover:text-blue-500 mb-4">
                 Users
               </Link>
-              <Link to="/about" className="text-black hover:text-blue-500 mb-4">
-                Destination
-              </Link>
+
               <button
                 className="py-2"
                 aria-label="Logout"
