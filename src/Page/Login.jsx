@@ -1,66 +1,56 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import ButtonPrimary from "../components/ButtonPrimary";
+import axios from "axios";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let valid = true;
 
-    if (username !== "ourair") {
-      setUsernameError("Username tidak valid");
-      valid = false;
-    } else {
-      setUsernameError("");
-    }
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/auth/signin`,
+        { email, password }
+      );
 
-    if (password !== "Admin12345") {
-      setPasswordError("Password salah");
-      valid = false;
-    } else {
-      setPasswordError("");
-    }
+      const { data } = response;
 
-    if (valid) {
-      try {
-        const response = await adminLogin(username, password);
-        if (response.success) {
-          localStorage.setItem("isLoggedIn", "true");
-          setSuccessMessage("Berhasil Masuk");
-          console.log("Login successful");
-          setTimeout(() => navigate("/Dashboard"), 2000);
+      if (data.status) {
+        localStorage.setItem("token", data.data.token);
+        setErrorMessage(""); // Clear error message on successful login
+        if (data.data.isVerified) {
+          navigate("/Dashboard");
+        } else {
+          setErrorMessage("Email belum terverifikasi.");
         }
-      } catch (error) {
-        console.error(" login error", error);
+      } else {
+        setErrorMessage(data.message); // Set error message from API response
+      }
+    } catch (error) {
+      console.error("Login Error:", error); // Log the error for debugging
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 400) {
+          setErrorMessage(data.message || "Permintaan tidak valid."); // Display backend error message if available
+        } else if (status === 401) {
+          setErrorMessage("Email atau password salah.");
+        } else if (status === 404) {
+          setErrorMessage("Email tidak terdaftar.");
+        } else {
+          setErrorMessage("Terjadi kesalahan saat login.");
+        }
+      } else {
+        setErrorMessage("Terjadi kesalahan saat login.");
       }
     }
-  };
-
-  const adminLogin = (username, password) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (username === "ourair" && password === "Admin12345") {
-          resolve({ success: true });
-        } else {
-          resolve({ success: false });
-        }
-      }, 1000);
-    });
   };
 
   return (
@@ -72,51 +62,46 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              htmlFor="username"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-600 mb-1"
             >
-              Username
+              Email
             </label>
             <input
-              id="username"
-              type="text"
-              placeholder="Masukkan username"
+              id="email"
+              type="email"
+              placeholder="Masukkan email"
               className={`w-full px-4 py-2 rounded-lg border ${
-                usernameError ? "border-red-500" : "border-gray-300"
+                errorMessage ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:border-blue-500`}
-              value={username}
-              autoComplete="off"
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            {usernameError && (
-              <div className="text-red-500 text-xs mt-1">{usernameError}</div>
-            )}
           </div>
           <div className="mb-6">
-            <div className="flex justify-between items-center mb-1">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-600"
-              >
-                Password
-              </label>
-            </div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              Password
+            </label>
             <div className="relative">
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Masukkan password"
                 className={`w-full px-4 py-2 rounded-lg border ${
-                  passwordError ? "border-red-500" : "border-gray-300"
+                  errorMessage ? "border-red-500" : "border-gray-300"
                 } focus:outline-none focus:border-blue-500`}
-                autoComplete="off"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
               <button
+                type="button"
                 className="absolute right-2 top-2 text-gray-400 hover:text-gray-600"
                 onClick={() => setShowPassword(!showPassword)}
-                type="button"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 <FontAwesomeIcon
@@ -125,17 +110,14 @@ const Login = () => {
                 />
               </button>
             </div>
-            {passwordError && (
-              <div className="text-red-500 text-xs mt-1">{passwordError}</div>
-            )}
           </div>
           <ButtonPrimary text="Masuk" type="submit" />
+          {errorMessage && (
+            <div className="mt-4 text-red-500 text-center text-sm">
+              {errorMessage}
+            </div>
+          )}
         </form>
-        {successMessage && (
-          <div className="mt-4 text-green-600 text-center text-lg font-semibold">
-            {successMessage}
-          </div>
-        )}
       </div>
     </div>
   );

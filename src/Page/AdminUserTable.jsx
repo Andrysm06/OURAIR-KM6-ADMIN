@@ -12,6 +12,7 @@ const AdminUserTable = () => {
     role: "",
     status: "Active",
   });
+
   const [isEditing, setIsEditing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -21,14 +22,15 @@ const AdminUserTable = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users`,
+          `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users?limit=93`,
           {
             headers: {
-              Authorization: `Bearer ${yourAuthToken}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        setUsers(response.data.data);
+        setUsers(response.data);
+        console.log("response", response);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           console.error("Unauthorized - Please log in again.");
@@ -43,6 +45,29 @@ const AdminUserTable = () => {
     fetchUsers();
   }, []);
 
+  const deleteUser = async (id) => {
+    console.log("id", id);
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log("response", response);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized - Please log in again.");
+        // Handle unauthorized access (e.g., redirect to login)
+      } else {
+        console.error("Error fetching users:", error.message);
+        // Handle other errors (e.g., display an error message to the user)
+      }
+    }
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -68,6 +93,7 @@ const AdminUserTable = () => {
   };
 
   const handleDeleteUser = (userId) => {
+    deleteUser(userId);
     setDeleteModalOpen(true);
     setUserToDelete(userId);
   };
@@ -331,7 +357,6 @@ const AdminUserTable = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };
