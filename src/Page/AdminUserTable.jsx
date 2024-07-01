@@ -68,6 +68,52 @@ const AdminUserTable = () => {
       }
     }
   };
+  const createUser = async (id) => {
+    console.log("id", id);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log("response", response);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized - Please log in again.");
+        // Handle unauthorized access (e.g., redirect to login)
+      } else {
+        console.error("Error fetching users:", error.message);
+        // Handle other errors (e.g., display an error message to the user)
+      }
+    }
+  };
+  const updateUser = async (id) => {
+    console.log("id", id);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log("response", response);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized - Please log in again.");
+        // Handle unauthorized access (e.g., redirect to login)
+      } else {
+        console.error("Error fetching users:", error.message);
+        // Handle other errors (e.g., display an error message to the user)
+      }
+    }
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
