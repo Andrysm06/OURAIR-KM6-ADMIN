@@ -12,6 +12,7 @@ import Notification from "./Page/Notification";
 import PrivateRoute from "./PrivateRoute";
 import AdminUserTable from "./Page/AdminUserTable";
 import NotFound from "../src/Layout/NotFound"; // Import komponen NotFound
+import AdminTicketsTable from "./Page/AdminTicketsTable";
 
 export const App = () => {
   return (
@@ -21,6 +22,7 @@ export const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/users" element={<AdminUserTable />} />
+        <Route path="/Tickets" element={<AdminTicketsTable />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

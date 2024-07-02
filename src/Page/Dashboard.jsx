@@ -1,26 +1,42 @@
 import React from "react";
-import Card from "../Layout/Card";
+import { motion } from "framer-motion";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
+import logo from "../../public/ourair_logo.svg"; // Sesuaikan path sesuai struktur proyek Anda
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-yellow-400 flex flex-col">
       <Navbar />
-      <div className="mt-8 md:mt-24 space-y-12 h-screen">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-gray-800">
+
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex justify-center items-center h-24 mt-8"
+      >
+        <img src={logo} alt="OurAir Logo" className="h-16 w-auto" />{" "}
+        {/* Sesuaikan ukuran jika diperlukan */}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="container mx-auto flex flex-col items-center justify-center flex-1 mt-8"
+      >
+        <h1 className="text-4xl font-bold text-white mb-8">
           Selamat datang admin ourair!
         </h1>
+        <Link
+          to="/Users"
+          className="text-xl text-white mb-8 hover:text-blue-300"
+        >
+          Mulai
+        </Link>
+      </motion.div>
 
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold mb-4">Dashboard Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Card title="Total Users" value="1,234" />
-            <Card title="Total Sales" value="$5,678" />
-            <Card title="New Orders" value="56" />
-          </div>
-        </div>
-      </div>
       <Footer />
     </div>
   );

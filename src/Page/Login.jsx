@@ -54,9 +54,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-5 md:px-0 bg-gray-100">
-      <div className="w-full max-w-sm relative bg-white p-8 rounded-lg shadow-md">
-        <h1 className="mb-5 text-2xl text-center font-bold text-gray-700">
+    <div className="flex items-center justify-center min-h-screen px-5 md:px-0 bg-gradient-to-br from-blue-300 to-white">
+      <div className="w-full max-w-sm relative  rounded-3xl bg-gradient-to-br from-white to-blue-200 p-8 shadow-md">
+        <h1 className="mb-5 text-2xl text-center  font-bold text-gray-700">
           Masuk
         </h1>
         <form onSubmit={handleSubmit}>
@@ -111,7 +111,11 @@ const Login = () => {
               </button>
             </div>
           </div>
-          <ButtonPrimary text="Masuk" type="submit" />
+          <ButtonPrimary
+            className={"hover:bg-blue-600"}
+            text="Masuk"
+            type="submit"
+          />
           {errorMessage && (
             <div className="mt-4 text-red-500 text-center text-sm">
               {errorMessage}

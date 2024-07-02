@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-white-800 text-black">
+    <footer className="bg-transparent text-black">
       <div className="container mx-auto py-8">
         <div className="flex justify-between items-center">
           {/* Social Icons */}
