@@ -199,7 +199,7 @@ const AdminUserTable = () => {
     <div className="min-h-screen bg-gradient-to-br from-white to-blue-300 flex flex-col">
       <Navbar />
       <div className="container mx-auto mt-8 md:mt-24 space-y-12 h-screen  px-4">
-        <h1 className="text- font-bold mb-4">User Management</h1>
+        <h1 className="text-3xl font-bold mb-4">User Management</h1>
 
         <div className="overflow-x-auto mb-4">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg">
