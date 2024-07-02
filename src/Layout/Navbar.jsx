@@ -28,7 +28,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
     navigate("/");
   };
 
@@ -65,7 +65,7 @@ const Navbar = () => {
         }`}
       >
         <div
-          className={`fixed left-0 top-0 h-full w-64 bg-transparent text-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+          className={`fixed left-0 top-0 h-full w-64 bg-transparent text-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
             sidebarVisible ? "translate-x-0" : "-translate-x-full"
           }`}
         >
