@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
-  const [sidebarIcon, setSidebarIcon] = useState(faList); // State untuk ikon sidebar
+  const [sidebarIcon, setSidebarIcon] = useState(faList);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const Navbar = () => {
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
-    setSidebarIcon(sidebarVisible ? faList : null); // Mengubah ikon berdasarkan status sidebar
+    setSidebarIcon(sidebarVisible ? faList : null);
   };
 
   const handleLogout = () => {
@@ -38,41 +38,49 @@ const Navbar = () => {
 
   const handleCancelLogout = () => {
     setConfirmLogout(false);
-    setSidebarVisible(false); // Menutup sidebar
-    setSidebarIcon(faList); // Mengembalikan ikon sidebar ke default
+    setSidebarVisible(false);
+    setSidebarIcon(faList);
   };
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-10 bg-transparent p-4 transition-all ${
-          isSticky ? "bg-white shadow-lg" : ""
-        }`}
+        className={`fixed top-0 left-0 right-0 z-10 transition-all ${
+          isSticky ? "backdrop-blur-md  shadow-lg" : "bg-transparent"
+        } p-4`}
       >
         <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <button onClick={toggleSidebar} aria-label="Toggle Sidebar">
-              <FontAwesomeIcon icon={sidebarIcon} className="px-2 h-5 mt-1" />
-              {/* Menggunakan state sidebarIcon */}
-            </button>
-          </div>
+          <button
+            onClick={toggleSidebar}
+            aria-label="Toggle Sidebar"
+            className="focus:outline-none"
+          >
+            <FontAwesomeIcon icon={sidebarIcon} className="h-5 text-gray-800" />
+          </button>
+          {/* <img
+            src={iconFaBell}
+            alt="Notification"
+            className="h-6 cursor-pointer"
+          /> */}
         </div>
       </nav>
 
       <div
-        className={`fixed inset-0 z-20 transition-all duration-300 ${
-          sidebarVisible ? "bg-black bg-opacity-50" : "pointer-events-none"
+        className={`fixed inset-0 z-20 transition-opacity duration-300 ${
+          sidebarVisible
+            ? "bg-black bg-opacity-50"
+            : "pointer-events-none opacity-0"
         }`}
       >
         <div
-          className={`fixed left-0 top-0 h-full w-64 bg-transparent text-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+          className={`fixed left-0 top-0 h-full w-64 bg-gray-800 text-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
             sidebarVisible ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="p-6">
             <button
               onClick={toggleSidebar}
-              className="flex items-center mt-4 px-2 py-2   hover:text-blue-500 rounded-lg"
+              className="flex items-center mt-4 px-2 py-2 hover:text-blue-500 rounded-lg"
               aria-label="Close Sidebar"
             >
               <FontAwesomeIcon
@@ -81,23 +89,25 @@ const Navbar = () => {
               />
               Tutup
             </button>
-            <div className="flex flex-col mt-4">
-              <Link to="/Dashboard" className=" hover:text-blue-500 mb-4">
-                Dashboard
-              </Link>
-              <Link to="/users" className=" hover:text-blue-500 mb-4">
+            <div className="flex flex-col mt-4 space-y-4">
+              <Link to="/users" className="hover:text-blue-500">
                 Users
               </Link>
-              <Link to="/tickets" className=" hover:text-blue-500 mb-4">
+              <Link to="/tickets" className="hover:text-blue-500">
                 Tickets
               </Link>
-
+              <Link to="/Transactions" className="hover:text-blue-500">
+                Transaction by id
+              </Link>
+              <Link to="/send-notification" className="hover:text-blue-500">
+                Send notification
+              </Link>
               <button
-                className="py-2"
+                className="py-2 hover:text-red-500"
                 aria-label="Logout"
                 onClick={handleConfirmLogout}
               >
-                <span className="text-lg hover:text-red-500">Keluar</span>
+                Keluar
               </button>
             </div>
           </div>
@@ -105,8 +115,8 @@ const Navbar = () => {
       </div>
 
       {confirmLogout && (
-        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
             <p className="mb-4">Tetap ingin keluar?</p>
             <div className="flex justify-end space-x-4">
               <button

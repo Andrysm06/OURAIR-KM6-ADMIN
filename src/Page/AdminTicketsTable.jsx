@@ -183,7 +183,7 @@ const AdminTicketsTable = () => {
     <div className="min-h-screen bg-gradient-to-br from-white to-blue-300 flex flex-col">
       <Navbar />
       <div className="container mx-auto mt-8 md:mt-24 space-y-12 h-screen px-4">
-        <h1 className="text-3xl font-bold mb-4">User Tickets</h1>
+        <h1 className="text-xl font-bold mt-6">User Tickets</h1>
 
         {errorMessage && (
           <div className="mb-4 text-red-500">{errorMessage}</div>

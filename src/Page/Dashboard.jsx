@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 to-yellow-400 flex flex-col">
-      <Navbar />
-
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,7 +31,7 @@ const Dashboard = () => {
           to="/Users"
           className="text-xl text-white mb-8 hover:text-blue-300"
         >
-          Mulai
+          Lanjut
         </Link>
       </motion.div>
 
