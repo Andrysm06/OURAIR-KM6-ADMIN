@@ -22,7 +22,7 @@ const NotFound = () => {
           tidak tersedia.
         </p>
         <a
-          href="/Dashboard"
+          href="/Welcome"
           className="mt-6 inline-block bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:from-blue-600 hover:to-blue-800"
         >
           Kembali
