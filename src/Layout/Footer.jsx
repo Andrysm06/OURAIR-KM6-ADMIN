@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
 
         {/* Menu */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <ul className="flex flex-wrap justify-center space-x-8">
             <li>
               <Link to="/about" className="hover:text-blue-500">
@@ -59,7 +59,7 @@ const Footer = () => {
               </Link>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Copy Right */}
         <div className="text-center mt-8">

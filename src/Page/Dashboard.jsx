@@ -27,12 +27,11 @@ const Dashboard = () => {
         <h1 className="text-4xl font-bold text-white mb-8">
           Selamat datang admin ourair!
         </h1>
-        <Link
-          to="/Users"
-          className="text-xl text-white mb-8 hover:text-blue-300"
-        >
-          Lanjut
-        </Link>
+        <button className=" bg-gradient-to-br from-white to-blue-300  hover:from-blue-300 hover:to-white rounded-2xl  font-bold py-2 px-4 ">
+          <Link to="/Users" className="text-xl  mb-8 ">
+            Lanjut
+          </Link>
+        </button>
       </motion.div>
 
       <Footer />
