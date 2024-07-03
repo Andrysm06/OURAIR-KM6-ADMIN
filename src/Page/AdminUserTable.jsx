@@ -4,7 +4,11 @@ import { motion } from "framer-motion";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AdminUserTable = () => {
   const [users, setUsers] = useState([]);
@@ -15,6 +19,7 @@ const AdminUserTable = () => {
     role: "",
     phone_number: "",
     created_at: "",
+    password: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -77,10 +82,17 @@ const AdminUserTable = () => {
   // Create user function
   const createUser = async () => {
     try {
-      const { name, email, phone_number, role } = formData;
+      const { name, email, phone_number, role, password } = formData;
+
+      // Check if user with the same email already exists
+      const existingUser = users.find((user) => user.email === email);
+      if (existingUser) {
+        throw new Error("User with this email already exists.");
+      }
+
       const response = await axios.post(
         `${import.meta.env.VITE_DOMAIN_API_DEV}/api/v1/users`,
-        { name, email, phone_number, role },
+        { name, email, phone_number, role, password },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,13 +100,23 @@ const AdminUserTable = () => {
         }
       );
 
-      setUsers([...users, response.data.data]);
+      setUsers([...users, response?.data?.data]);
       closeModal();
     } catch (error) {
-      handleRequestError(error);
+      if (error.response && error.response.status === 400) {
+        console.error(
+          "Bad request. Invalid user data provided:",
+          error.response.data
+        );
+        // Handle specific 400 error (e.g., display error message to user)
+      } else if (error.message.includes("already exists")) {
+        console.error("User with this email already exists.");
+        // Handle specific conflict error (e.g., display error message to user)
+      } else {
+        handleRequestError(error);
+      }
     }
   };
-
   // Update user function
   const updateUser = async (id) => {
     try {
@@ -110,6 +132,7 @@ const AdminUserTable = () => {
       );
 
       setUsers(
+        console.log("response", response),
         users.map((user) => (user?.id === id ? response.data?.data : user))
       );
       closeModal();
@@ -176,6 +199,7 @@ const AdminUserTable = () => {
       email: "",
       role: "",
       phone_number: "",
+      password: "",
     });
   };
 
@@ -194,6 +218,12 @@ const AdminUserTable = () => {
   };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-blue-300 flex flex-col">
@@ -364,6 +394,7 @@ const AdminUserTable = () => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
+
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -384,9 +415,37 @@ const AdminUserTable = () => {
                   disabled={isEditing}
                 />
               </div>
+              {!isEditing && (
+                <div className="mb-4 relative">
+                  <label htmlFor="password" className="block mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      required
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 px-3 py-2 bg-transparent"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="text-gray-500"
+                      />
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="mb-4">
                 <label
-                  htmlFor="email"
+                  htmlFor="phone_number"
                   className="block text-sm font-medium text-gray-700"
                 >
                   phone number
@@ -409,18 +468,15 @@ const AdminUserTable = () => {
                   Role
                 </label>
                 <div className="relative">
-                  <select
+                  <input
                     className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="role"
                     name="role"
                     value={formData.role}
                     onChange={handleInputChange}
-                  >
-                    <option>USER</option>
-                    <option>ADMIN</option>
-                  </select>
+                  ></input>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <FontAwesomeIcon icon={faChevronDown} />
+                    {/* <FontAwesomeIcon icon={faChevronDown} /> */}
                   </div>
                 </div>
               </div>

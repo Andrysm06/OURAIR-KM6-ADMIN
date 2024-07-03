@@ -353,7 +353,7 @@ const AdminTicketsTable = () => {
           Add Tickets
         </button>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

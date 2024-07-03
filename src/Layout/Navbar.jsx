@@ -93,9 +93,9 @@ const Navbar = () => {
               <Link to="/users" className="hover:text-blue-500">
                 Users
               </Link>
-              <Link to="/tickets" className="hover:text-blue-500">
+              {/* <Link to="/tickets" className="hover:text-blue-500">
                 Tickets
-              </Link>
+              </Link> */}
               <Link to="/Transactions" className="hover:text-blue-500">
                 Transaction by id
               </Link>

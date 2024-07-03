@@ -27,7 +27,7 @@ const Login = () => {
         localStorage.setItem("token", data.data.token);
         setErrorMessage(""); // Clear error message on successful login
         if (data.data.isVerified) {
-          navigate("/Dashboard");
+          navigate("/Welcome");
         } else {
           setErrorMessage("Email belum terverifikasi.");
         }

@@ -16,9 +16,9 @@ export const Routess = () => {
         <Route path="/" element={<Login />} />
 
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/Welcome" element={<Dashboard />} />
           <Route path="/users" element={<AdminUserTable />} />
-          <Route path="/tickets" element={<AdminTicketsTable />} />
+          {/* <Route path="/tickets" element={<AdminTicketsTable />} /> */}
           <Route path="/send-notification" element={<SendNotification />} />
           <Route path="/transactions" element={<Transactions />} />
         </Route>
