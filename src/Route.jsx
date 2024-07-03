@@ -21,9 +21,8 @@ export const Routess = () => {
           {/* <Route path="/tickets" element={<AdminTicketsTable />} /> */}
           <Route path="/send-notification" element={<SendNotification />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
